@@ -4,7 +4,7 @@ COPY requirements.txt /aviasales_bot/requirements.txt
 
 WORKDIR /aviasales_bot
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN PYTHONPATH=/usr/bin/python pip install -r requirements.txt
 
 COPY . /aviasales_bot
 
