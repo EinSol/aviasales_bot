@@ -8,5 +8,5 @@ def store_user(user_info):
                     username=user_info['username'],
                     name=user_info['name'],
                     phone=user_info['phone'],
-                    application=json.dumps(user_info['application']),
+                    application=json.dumps(user_info['wishlist']),
                     )
