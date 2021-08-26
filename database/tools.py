@@ -4,7 +4,7 @@ import json
 
 def store_user(user_info):
     with db:
-        User.create(uid=user_info.uid,
+        User.create(uid=user_info['uid'],
                     username=user_info['username'],
                     name=user_info['name'],
                     phone=user_info['phone'],
