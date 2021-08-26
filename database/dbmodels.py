@@ -5,7 +5,7 @@ DB_PASS = config('DB_PASS')
 DB_HOST = config('DB_HOST')
 DB_USER = config('DB_USER')
 
-db = PostgresqlDatabase('aviasales',
+db = PostgresqlDatabase('users_db',
                         user=DB_USER,
                         password=DB_PASS,
                         host=DB_HOST)
