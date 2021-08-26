@@ -6,7 +6,7 @@ import logging
 from logdna import LogDNAHandler
 from sentry_sdk.integrations.logging import LoggingIntegration
 from search_screen.handlers import search_conversation_handler
-from admin_screen.handlers import mark_offer_handler
+from admin_screen.handlers import admin_conversation_handler
 
 
 logging.basicConfig(level=logging.DEBUG,
@@ -51,7 +51,7 @@ if __name__ == '__main__':
         raise EnvironmentError
 
     bot.dispatcher.add_handler(CommandHandler("debug", lambda u, _: u.message.reply_text("I'm up!")), group=-666)
-    bot.dispatcher.add_handler(mark_offer_handler)
+    bot.dispatcher.add_handler(admin_conversation_handler)
     bot.dispatcher.add_handler(search_conversation_handler)
     bot.updater.start_polling()
     bot.updater.idle()

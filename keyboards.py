@@ -22,8 +22,8 @@ del_item_button = InlineKeyboardButton(text=f'remove', callback_data=f'remove')
 to_tours_button = InlineKeyboardButton(text=f'show tours', callback_data=f'tours')
 add_tour_button = InlineKeyboardButton(text=f'add to wishlist', callback_data=f'add')
 back_tour_button = InlineKeyboardButton(text=f'back to hotels', callback_data=f'back')
-done_button = InlineKeyboardButton(text=f'Done', callback_data=f'admin:done')
-undone_button = InlineKeyboardButton(text=f'Undone', callback_data=f'admin:undone')
+done_button = InlineKeyboardButton(text=f'done', callback_data=f'admin:done')
+undone_button = InlineKeyboardButton(text=f'undone', callback_data=f'admin:undone')
 result_reply_buttons = [['to hotels', 'to wishlist', 'to search'], ['send application']]
 search_reply_buttons = [['to', 'from', 'date'], ['search']]
 

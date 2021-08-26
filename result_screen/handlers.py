@@ -17,6 +17,7 @@ from keyboards import (hotels_list_kb, tours_list_kb, one_tour_kb, result_reply_
 from phonenumbers import carrier
 from phonenumbers import parse
 from phonenumbers.phonenumberutil import number_type
+from database.tools import store_user
 
 HOTELS_LIST_FUNCTION, TOURS_LIST_FUNCTION, WISHLIST_FUNCTION, APPLICATION_FUNCTION = range(9, 13)
 
@@ -631,12 +632,12 @@ validate_phone_handler = MessageHandler(callback=validate_phone_callback,
 
 def validate_messager_callback(update: Update, context: CallbackContext) -> int:
     cid = update.effective_chat.id
-    q = update.callback_query.data
+    q = update.callback_query.data.split(':')[1]
     wishlist = context.chat_data['wishlist']['wishlist_info']
     application = context.chat_data['application']
     application['messager'] = q
     context.chat_data['application'] = application
-    admin_id = config('TEST_ADMIN_ID')
+    admin_id = int(config('TEST_ADMIN_ID'))
 
     tids = context.chat_data['temporary_ids']
 
@@ -660,8 +661,8 @@ def validate_messager_callback(update: Update, context: CallbackContext) -> int:
                              reply_markup=admin_undone_kb)
 
     for wishlist_item in wishlist:
-        for id in [admin_id, cid]:
-            context.bot.send_message(chat_id=id,
+        for cid in [admin_id, cid]:
+            context.bot.send_message(chat_id=cid,
                                      text=wishlist_representation_text.format(wishlist_item['hotel_name'],
                                                                               wishlist_item['town'],
                                                                               wishlist_item['arrival_date'],
@@ -670,6 +671,25 @@ def validate_messager_callback(update: Update, context: CallbackContext) -> int:
                                                                               wishlist_item['room'],
                                                                               wishlist_item['food'],
                                                                               wishlist_item['price']))
+    user_info = {
+        'uid': update.effective_message.from_user.id,
+        'name': application['name'],
+        'phone': application['phone'],
+        'messager': application['messager'],
+        'username': update.effective_message.from_user.first_name,
+        'wishlist': wishlist,
+    }
+
+    store_user(user_info)
+
+    payload = {'message_id': 0,
+               'current_index': 0,
+               'number_of_items': 0,
+               'wishlist_info': []}
+    context.chat_data['wishlist'] = payload
+    context.chat_data['application'] = {'name': '',
+                                        'phone': '',
+                                        'messager': ''}
 
     return APPLICATION_FUNCTION
 
@@ -701,6 +721,7 @@ result_conversation_handler = ConversationHandler(
             prev_next_wishlist_handler,
             del_from_wishlist_handler,
             back_to_hotels_handler,
+            to_wishlist_handler,
             send_application_handler,
         ],
         APPLICATION_FUNCTION: [
