@@ -31,6 +31,7 @@ def submit_request_callback(update: Update, context: CallbackContext):
                                  text=uncomplete_formular_text,
                                  parse_mode=ParseMode.HTML,
                                  )
+        return ConversationHandler.END
 
     search_request['stars'] = [str(i + 1) for i in search_request['stars']]
     search_request['food'] = [str(i + 2) for i in search_request['food']]
@@ -599,7 +600,11 @@ def validate_name_callback(update: Update, context: CallbackContext) -> int:
 
 validate_name_handler = MessageHandler(callback=validate_name_callback,
                                        pass_chat_data=True,
-                                       filters=Filters.regex(r'(?:(?![0-9_])[\w])+'))
+                                       filters=Filters.regex(r'(?:(?![0-9_])[\w])+') &
+                                               ~Filters.text('to hotel') &
+                                               ~Filters.text('to wishlist') &
+                                               ~Filters.text('to search') &
+                                               ~Filters.text('send applecation'))
 
 
 def validate_phone_callback(update: Update, context: CallbackContext) -> int:
@@ -732,11 +737,11 @@ result_conversation_handler = ConversationHandler(
             send_application_handler,
         ],
         APPLICATION_FUNCTION: [
+            back_to_hotels_handler,
+            to_wishlist_handler,
             validate_name_handler,
             validate_phone_handler,
             validate_messager_handler,
-            back_to_hotels_handler,
-            to_wishlist_handler,
         ],
 
     },
