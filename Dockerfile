@@ -1,4 +1,4 @@
-FROM python:3.8.3-slim
+FROM python:3.8
 
 # Adding trusting keys to apt for repositories
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
@@ -16,8 +16,7 @@ RUN apt-get install -y google-chrome-stable
 RUN apt-get install -yqq unzip
 
 # Download the Chrome Driver
-RUN wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/`
-curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE
+RUN wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE
 `/chromedriver_linux64.zip
 
 # Unzip the Chrome Driver into /usr/local/bin directory
