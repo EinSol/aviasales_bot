@@ -4,6 +4,8 @@ from datetime import datetime
 DB_PASS = config('DB_PASS')
 DB_HOST = config('DB_HOST')
 DB_USER = config('DB_USER')
+ENV = config('ENV')
+
 
 db = PostgresqlDatabase('users_db',
                         user=DB_USER,
@@ -24,8 +26,8 @@ class User(Model):
         database = db
 
 
-if not User.table_exists():
-    db.create_tables([User])
+# if not User.table_exists() and ENV == 'PROD':
+#     db.create_tables([User])
 
 
 

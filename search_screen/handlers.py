@@ -8,11 +8,9 @@ from search_screen.texts import (welcome_text, wrong_input_text, wrong_date_text
                                  kids_text, nights_amount_text, request_template_text, stars_text,
                                  food_text, incorrect_range_date_text, )
 from datetime import datetime
-from backend.selenium_parser import get_info
 from pprint import pprint
 from keyboards import (adults_kb, kids_kb, stars_kb, food_list, food_kb,
-                       hotels_list_kb, tours_list_kb, one_tour_kb, result_reply_kb,
-                       search_reply_kb, result_reply_buttons, search_reply_buttons)
+                       search_reply_kb, search_reply_buttons)
 from result_screen.handlers import result_conversation_handler
 from decouple import config
 
@@ -28,11 +26,11 @@ def start_callback(update: Update, context: CallbackContext):
     context.bot.send_message(chat_id=cid,
                              text=welcome_text.format(username),
                              reply_markup=search_reply_kb)
-    request_template = {'destination_country': 20,
-                        'departure_city': 20,
+    request_template = {'destination_country': None,
+                        'departure_city': None,
                         'min_nights': '7',
                         'max_nights': '10',
-                        'date': '21.08.2021-21.08.2021',
+                        'date': '',
                         'adults': '2',
                         'kids': '0',
                         'stars': [],

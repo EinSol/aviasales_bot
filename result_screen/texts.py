@@ -113,3 +113,4 @@ user_data_text='''your application:
 name: {}
 phone: {}
 messager: {}'''
+uncomplete_formular_text='You didnt choose date, destination country or departure city.'

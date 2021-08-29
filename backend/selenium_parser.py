@@ -7,20 +7,25 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import Select
 
-
 username = config('USERNAME')
 password = config('PASS')
-path_driver = config('PATH_TO_DRIVER')
-path_chrome = config('PATH_TO_CHROME')
+ENV = config('ENV')
 
 options = Options()
-options.binary_location = path_chrome  # chrome binary location specified here
+if ENV == 'DEBUG':
+    path_driver = config('PATH_TO_DRIVER')
+    path_chrome = config('PATH_TO_CHROME')
+    options.binary_location = path_chrome  # chrome binary location specified here
+
+options.add_argument("--headless")
 options.add_argument("--start-maximized")  # open Browser in maximized mode
 options.add_argument("--no-sandbox")  # bypass OS security model
 options.add_argument("--disable-dev-shm-usage")  # overcome limited resource problems
 options.add_experimental_option("excludeSwitches", ["enable-automation"])
 options.add_experimental_option('useAutomationExtension', False)
-
+chrome_prefs = {}
+options.experimental_options["prefs"] = chrome_prefs
+chrome_prefs["profile.default_content_settings"] = {"images": 2}
 
 params = {'destination_country': 'ОАЭ',
           'departure_city': 'Киев',
@@ -66,7 +71,11 @@ def get_info(param):
     """
 
     while True:
-        driver = webdriver.Chrome(options=options, executable_path=path_driver)
+        if ENV == 'DEBUG':
+            driver = webdriver.Chrome(options=options, executable_path=path_driver)
+        else:
+            driver = webdriver.Chrome(options=options)
+
         try:
             driver.get(config('URL'))
             driver.maximize_window()
@@ -123,7 +132,7 @@ def get_info(param):
                 if city.text == param['departure_city']:
                     city.click()
 
-            #date
+            # date
             date_input = wait.until(EC.visibility_of_element_located((By.ID, "search_date")))
             date_input.send_keys(param['date'])
 
@@ -173,17 +182,21 @@ def get_info(param):
             offers = wait.until(EC.visibility_of_all_elements_located((By.CLASS_NAME, "tourua-price")))
             proceed_offers = []
             for offer in offers:
-                proceed_offer = {}
-                proceed_offer['town'] = offer.find_element_by_class_name('town-name').text[12:]
-                proceed_offer['hotel_name'] = ' '.join(offer.find_element_by_class_name('tourua-hotel-name').text.split(' ')[1:])
-                proceed_offer['stars'] = offer.find_element_by_class_name('tourua-hotel-name').find_element_by_xpath('..').text[-2:-1]
-                proceed_offer['start_price'] = offer.find_element_by_class_name('price').find_element_by_tag_name(
-                    'a').text.split(' ')[1:]
+                start_price = offer.find_element_by_class_name('price').find_element_by_tag_name(
+                                     'a').text.split(' ')[1:]
+                proceed_offer = {'town': offer.find_element_by_class_name('town-name').text[12:],
+                                 'hotel_name': ' '.join(
+                                     offer.find_element_by_class_name('tourua-hotel-name').text.split(' ')[1:]),
+                                 'stars': offer.find_element_by_class_name('tourua-hotel-name').find_element_by_xpath(
+                                     '..').text[-2:-1],
+                                 'start_price': '.'.join(start_price)}
 
-                open_list_button = offer.find_element_by_class_name('result-icon').find_element_by_class_name('material-icons')
+                open_list_button = offer.find_element_by_class_name('result-icon').find_element_by_class_name(
+                    'material-icons')
                 open_list_button.click()
 
-                possible_tours = wait.until(EC.visibility_of_all_elements_located((By.CLASS_NAME, 'tourua-price-detail')))[:-1]
+                possible_tours = wait.until(
+                    EC.visibility_of_all_elements_located((By.CLASS_NAME, 'tourua-price-detail')))[:-1]
                 proceed_offer['tours'] = []
                 for tour in possible_tours:
                     tour_info = {}
@@ -192,7 +205,8 @@ def get_info(param):
                     tour_info['food'] = information_blocks[2].text
                     tour_info['arrival_date'] = information_blocks[3].text.split(' ')[0][:-1]
                     tour_info['nights'] = information_blocks[3].text.split(' ')[1].split('н')[0]
-                    tour_info['price'] = information_blocks[3].find_element_by_tag_name('a').get_attribute('text').strip()
+                    tour_info['price'] = information_blocks[3].find_element_by_tag_name('a').get_attribute(
+                        'text').strip()
                     proceed_offer['tours'].append(tour_info)
 
                 open_list_button.click()
@@ -204,5 +218,3 @@ def get_info(param):
         except Exception as e:
             print(e)
             driver.close()
-
-

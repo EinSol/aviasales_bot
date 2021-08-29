@@ -1,12 +1,12 @@
 import telegram.error
 from telegram.ext import (MessageHandler, Filters, CallbackContext, CallbackQueryHandler,
-                          ConversationHandler, CommandHandler, )
+                          ConversationHandler, )
 from telegram import (Update, ParseMode)
 from search_screen.texts import (welcome_text)
 from result_screen.texts import (test, empty_wishlist_text, tour_representation_text,
                                  hotel_representation_text, wishlist_representation_text,
                                  add_item_text, enter_name_text, enter_phone_text, choose_messager_text,
-                                 incorrect_name_text, invalid_phone_text, user_data_text)
+                                 incorrect_name_text, invalid_phone_text, user_data_text, uncomplete_formular_text)
 from backend.selenium_parser import get_info
 from decouple import config
 from pprint import pprint
@@ -24,14 +24,21 @@ HOTELS_LIST_FUNCTION, TOURS_LIST_FUNCTION, WISHLIST_FUNCTION, APPLICATION_FUNCTI
 
 def submit_request_callback(update: Update, context: CallbackContext):
     search_request = context.chat_data['search_request']
+    cid = update.effective_chat.id
+
+    if not search_request['destination_country'] or not search_request['departure_city'] or not search_request['date']:
+        context.bot.send_message(chat_id=cid,
+                                 text=uncomplete_formular_text,
+                                 parse_mode=ParseMode.HTML,
+                                 )
+
     search_request['stars'] = [str(i + 1) for i in search_request['stars']]
     search_request['food'] = [str(i + 2) for i in search_request['food']]
 
     mid = update.message.reply_text(text='Processing...').message_id
     cid = update.effective_chat.id
 
-    # result = get_info(search_request)
-    result = test
+    result = get_info(search_request)
     current_hotel = result[0]
     try:
         context.bot.delete_message(chat_id=cid,
