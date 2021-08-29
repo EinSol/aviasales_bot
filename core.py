@@ -45,7 +45,7 @@ if __name__ == '__main__':
 
     if env == 'DEBUG':
         bot = AviasalesBot(config('BOT_TEST_TOKEN'))
-    elif env == 'PRODUCTION':
+    elif env == 'PROD':
         bot = AviasalesBot(config('BOT_TOKEN'))
     else:
         raise EnvironmentError
