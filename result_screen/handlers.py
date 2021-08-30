@@ -44,8 +44,9 @@ def submit_request_callback(update: Update, context: CallbackContext):
             continue
 
     for i, text in enumerate(food_list):
-        search_request['food'].remove(text)
-        search_request['food'].append(i+2)
+        if text in search_request['food']:
+            search_request['food'].remove(text)
+            search_request['food'].append(i+2)
 
 
     mid = update.message.reply_text(text=in_process_text).message_id
