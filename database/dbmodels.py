@@ -7,27 +7,27 @@ DB_USER = config('DB_USER')
 ENV = config('ENV')
 
 
-# db = PostgresqlDatabase('users_db',
-#                         user=DB_USER,
-#                         password=DB_PASS,
-#                         host=DB_HOST)
+db = PostgresqlDatabase('users_db',
+                        user=DB_USER,
+                        password=DB_PASS,
+                        host=DB_HOST)
 
 
-# class User(Model):
-#     name= CharField()
-#     phone = CharField()
-#     uid = BigIntegerField()
-#     username = CharField()
-#     date=DateTimeField(default=datetime.now)
-#     application = JSONField(null=True,
-#                         default={})
-#
-#     class Meta:
-#         database = db
-#
-#
-# if not User.table_exists() and ENV == 'PROD':
-#     db.create_tables([User])
+class User(Model):
+    name= CharField()
+    phone = CharField()
+    uid = BigIntegerField()
+    username = CharField()
+    date=DateTimeField(default=datetime.now)
+    application = JSONField(null=True,
+                        default={})
+
+    class Meta:
+        database = db
+
+
+if not User.table_exists() and ENV == 'PROD':
+    db.create_tables([User])
 
 
 
