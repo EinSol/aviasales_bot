@@ -6,6 +6,7 @@ from decouple import config
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import Select
+from search_screen.texts import country_list, city_list
 
 username = config('USERNAME')
 password = config('PASS')
@@ -17,7 +18,7 @@ if env == 'DEBUG':
     path_chrome = config('PATH_TO_CHROME')
     options.binary_location = path_chrome  # chrome binary location specified here
 
-options.add_argument("--headless")
+# options.add_argument("--headless")
 options.add_argument("--start-maximized")  # open Browser in maximized mode
 options.add_argument("--no-sandbox")  # bypass OS security model
 options.add_argument("--disable-dev-shm-usage")  # overcome limited resource problems
@@ -106,7 +107,9 @@ def get_info(param):
         actions = ActionChains(driver)
         destination_list = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, "chosen-results")))
         countries = destination_list.find_elements_by_tag_name("li")
-        actions.move_to_element(countries[param['destination_country']]).click().perform()
+        for country in countries:
+            if country.text == country_list[param['destination_country']]:
+                actions.move_to_element(country).click().perform()
 
         # departure city
         actions = ActionChains(driver)
@@ -118,7 +121,9 @@ def get_info(param):
         destination_list = wait.until(EC.visibility_of_all_elements_located((By.CLASS_NAME, "chosen-results")))[1]
         print(destination_list.text)
         cities = destination_list.find_elements_by_tag_name("li")
-        actions.move_to_element(cities[param['departure_city']]).click().perform()
+        for city in cities:
+            if city.text == city_list[param['destination_country']]:
+                actions.move_to_element(city).click(city).perform()
 
         # date
         date_input = wait.until(EC.visibility_of_element_located((By.ID, "search_date")))

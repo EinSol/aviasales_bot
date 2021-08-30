@@ -3,7 +3,7 @@ from telegram.ext import (MessageHandler, Filters, CallbackContext, CallbackQuer
                           ConversationHandler, CommandHandler, )
 from telegram import (Update, ParseMode)
 from search_screen.texts import (welcome_text, wrong_input_text, wrong_date_text,
-                                 country_list_text, city_list_text, enter_destination_text,
+                                 country_list, city_list, enter_destination_text,
                                  enter_departure_text, enter_date_text, old_date_text, adults_text,
                                  kids_text, nights_amount_text, request_template_text, stars_text,
                                  food_text, incorrect_range_date_text, )
@@ -60,6 +60,7 @@ start_handler = CommandHandler(command='start',
 
 def destination_country_callback(update: Update, context: CallbackContext):
     cid = update.effective_message.chat.id
+    country_list_text = ''.join([f'{index+1}. {text}\n' for index, text in enumerate(country_list)])
     update.message.reply_text(country_list_text)
     update.message.reply_text(enter_destination_text)
 
@@ -77,7 +78,7 @@ def validate_destination_callback(update: Update, context: CallbackContext):
 
     try:
         q = int(q) - 1
-        if 0 > q or q > 23:
+        if 0 > q or q > len(country_list) - 1:
             raise ValueError
     except Exception as e:
         update.message.reply_text(wrong_input_text)
@@ -98,6 +99,7 @@ validate_destination_handler = MessageHandler(callback=validate_destination_call
 
 def departure_city_callback(update: Update, context: CallbackContext):
     cid = update.effective_message.chat.id
+    city_list_text = ''.join([f'{index+1}. {text}\n' for index, text in enumerate(city_list)])
     update.message.reply_text(city_list_text)
     update.message.reply_text(enter_departure_text)
     return DEPARTURE_FUNCTION
@@ -114,7 +116,7 @@ def validate_departure_callback(update: Update, context: CallbackContext):
 
     try:
         q = int(q) - 1
-        if 0 > q or q > 21:
+        if 0 > q or q > len(city_list) - 1:
             raise ValueError
     except Exception as e:
         print(e)
@@ -474,8 +476,8 @@ def show_param_callback(update: Update, context: CallbackContext):
     food = ', '.join(food)
 
     update.message.reply_text(request_template_text.format(
-        search_request['destination_country'],
-        search_request['departure_city'],
+        search_request['destination_country']+1,
+        search_request['departure_city']+1,
         search_request['date'],
         stars,
         search_request['adults'],
