@@ -18,7 +18,7 @@ from keyboards import (hotels_list_kb, tours_list_kb, one_tour_kb, result_reply_
 from phonenumbers import carrier
 from phonenumbers import parse
 from phonenumbers.phonenumberutil import number_type
-# from database.tools import store_user
+from database.tools import store_user
 
 HOTELS_LIST_FUNCTION, TOURS_LIST_FUNCTION, WISHLIST_FUNCTION, APPLICATION_FUNCTION = range(9, 13)
 
@@ -705,8 +705,8 @@ def validate_messager_callback(update: Update, context: CallbackContext) -> int:
         'wishlist': wishlist,
     }
 
-    # if env == 'PROD':
-    #     store_user(user_info)
+    if env == 'PROD':
+        store_user(user_info)
 
     payload = {'message_id': 0,
                'current_index': 0,
