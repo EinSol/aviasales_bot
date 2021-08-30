@@ -66,7 +66,6 @@ def get_info(param):
         driver = webdriver.Chrome(options=options)
 
     driver.get(config('URL'))
-    driver.fullscreen_window()
     wait = WebDriverWait(driver, 50)
 
     try:
@@ -104,6 +103,7 @@ def get_info(param):
         actions.move_to_element(destination_block)
         actions.click(destination_block)
         actions.perform()
+        actions = ActionChains(driver)
         destination_list = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, "chosen-results")))
         countries = destination_list.find_elements_by_tag_name("li")
         actions.move_to_element(countries[param['destination_country']]).click().perform()
@@ -116,6 +116,7 @@ def get_info(param):
         actions.perform()
         actions = ActionChains(driver)
         destination_list = wait.until(EC.visibility_of_all_elements_located((By.CLASS_NAME, "chosen-results")))[1]
+        print(destination_list.text)
         cities = destination_list.find_elements_by_tag_name("li")
         actions.move_to_element(cities[param['departure_city']]).click().perform()
 
@@ -172,6 +173,7 @@ def get_info(param):
             actions = ActionChains(driver)
             start_price = offer.find_element_by_class_name('price').find_element_by_tag_name(
                 'a').text.split(' ')[1:]
+            print(offer.find_element_by_class_name('town-name').text[12:])
             proceed_offer = {'town': offer.find_element_by_class_name('town-name').text[12:],
                              'hotel_name': ' '.join(
                                  offer.find_element_by_class_name('tourua-hotel-name').text.split(' ')[1:]),
@@ -206,6 +208,3 @@ def get_info(param):
         print(e)
         driver.close()
         return
-
-
-
