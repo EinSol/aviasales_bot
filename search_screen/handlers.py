@@ -88,7 +88,7 @@ def validate_destination_callback(update: Update, context: CallbackContext):
     search_request = context.chat_data['search_request']
     pprint(search_request)
     search_request['destination_country'] = q
-    update.message.reply_text(your_country_text.format(country_list[q+1]))
+    update.message.reply_text(your_country_text.format(country_list[q]))
 
     return SEARCH_FUNCTIONS
 
@@ -128,7 +128,7 @@ def validate_departure_callback(update: Update, context: CallbackContext):
     pprint(search_request)
     search_request['departure_city'] = q
 
-    update.message.reply_text(your_city_text.format(city_list[q+1]))
+    update.message.reply_text(your_city_text.format(city_list[q]))
     return SEARCH_FUNCTIONS
 
 

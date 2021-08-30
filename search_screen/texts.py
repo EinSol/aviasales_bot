@@ -21,7 +21,7 @@ your_country_text='Страна: {}'
 your_nights_text='Количевство ночей: {}-{}'
 wrong_date_text = 'Некорректная дата, правильный формат - дд.мм.гггг'
 
-enter_destination_text = 'Введите код страны::'
+enter_destination_text = 'Введите код страны:'
 enter_departure_text = 'Введите код города:'
 enter_date_text = 'ВВедите дату вылета дд.мм.гггг - дд.мм.гггг:'
 old_date_text = 'Эта дата уже прошла.\n' \

@@ -2,19 +2,19 @@ import telegram.error
 from telegram.ext import (MessageHandler, Filters, CallbackContext, CallbackQueryHandler,
                           ConversationHandler, )
 from telegram import (Update, ParseMode)
-from search_screen.texts import (welcome_text)
+from search_screen.texts import (welcome_text, pin_symb)
 from result_screen.texts import (empty_wishlist_text, tour_representation_text,
                                  hotel_representation_text, wishlist_representation_text,
                                  add_item_text, enter_name_text, enter_phone_text, choose_messager_text,
                                  incorrect_name_text, invalid_phone_text, user_data_text, uncomplete_formular_text,
-                                 no_tours_text)
+                                 no_tours_text, in_process_text)
 from backend.selenium_parser import get_info
 from decouple import config
 from pprint import pprint
 from regex import match, sub
 from keyboards import (hotels_list_kb, tours_list_kb, one_tour_kb, result_reply_kb,
                        search_reply_kb, result_reply_buttons, one_item_wishlist_kb, wishlist_kb,
-                       messager_kb, search_reply_buttons)
+                       messager_kb, search_reply_buttons,food_list)
 from phonenumbers import carrier
 from phonenumbers import parse
 from phonenumbers.phonenumberutil import number_type
@@ -37,10 +37,18 @@ def submit_request_callback(update: Update, context: CallbackContext):
                                  )
         return ConversationHandler.END
 
-    search_request['stars'] = [str(i + 1) for i in search_request['stars']]
-    search_request['food'] = [str(i + 2) for i in search_request['food']]
+    for i in range(1, 6):
+        if pin_symb*i in search_request['stars']:
+            search_request['stars'].remove(pin_symb*i)
+            search_request['stars'].append(i)
+            continue
 
-    mid = update.message.reply_text(text='Processing...').message_id
+    for i, text in enumerate(food_list):
+        search_request['food'].remove(text)
+        search_request['food'].append(i+2)
+
+
+    mid = update.message.reply_text(text=in_process_text).message_id
     cid = update.effective_chat.id
 
     result = get_info(search_request)
@@ -64,7 +72,7 @@ def submit_request_callback(update: Update, context: CallbackContext):
         print(e)
 
     context.bot.send_message(chat_id=cid,
-                             text='Uploaded!',
+                             text=found_text,
                              parse_mode=ParseMode.HTML,
                              reply_markup=result_reply_kb,
                              )

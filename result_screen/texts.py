@@ -1,4 +1,6 @@
 empty_wishlist_text='Ваш список пуст:('
+in_process_text='Processing...'
+found_text="Найдено!"
 hotel_representation_text = '''Отель: {}
 Город: {}
 Звезды: {}
