@@ -14,7 +14,7 @@ from pprint import pprint
 from regex import match, sub
 from keyboards import (hotels_list_kb, tours_list_kb, one_tour_kb, result_reply_kb,
                        search_reply_kb, result_reply_buttons, one_item_wishlist_kb, wishlist_kb,
-                       messager_kb, search_reply_buttons, admin_undone_kb)
+                       messager_kb, search_reply_buttons)
 from phonenumbers import carrier
 from phonenumbers import parse
 from phonenumbers.phonenumberutil import number_type
