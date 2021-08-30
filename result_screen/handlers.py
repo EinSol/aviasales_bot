@@ -6,7 +6,8 @@ from search_screen.texts import (welcome_text)
 from result_screen.texts import (test, empty_wishlist_text, tour_representation_text,
                                  hotel_representation_text, wishlist_representation_text,
                                  add_item_text, enter_name_text, enter_phone_text, choose_messager_text,
-                                 incorrect_name_text, invalid_phone_text, user_data_text, uncomplete_formular_text)
+                                 incorrect_name_text, invalid_phone_text, user_data_text, uncomplete_formular_text,
+                                 no_tours_text)
 from backend.selenium_parser import get_info
 from decouple import config
 from pprint import pprint
@@ -26,7 +27,10 @@ def submit_request_callback(update: Update, context: CallbackContext):
     search_request = context.chat_data['search_request']
     cid = update.effective_chat.id
 
-    if not search_request['destination_country'] or not search_request['departure_city'] or not search_request['date']:
+    pprint(search_request)
+    if search_request['destination_country'] is None or\
+            search_request['departure_city'] is None or\
+            not search_request['date']:
         context.bot.send_message(chat_id=cid,
                                  text=uncomplete_formular_text,
                                  parse_mode=ParseMode.HTML,
@@ -40,6 +44,16 @@ def submit_request_callback(update: Update, context: CallbackContext):
     cid = update.effective_chat.id
 
     result = get_info(search_request)
+
+    if result is None:
+        context.bot.send_message(chat_id=cid,
+                                 text=no_tours_text,
+                                 parse_mode=ParseMode.HTML,
+                                 reply_markup=search_reply_kb,
+                                 )
+
+        return ConversationHandler.END
+
     current_hotel = result[0]
     try:
         context.bot.delete_message(chat_id=cid,
@@ -109,7 +123,7 @@ def back_to_hotels_callback(update: Update, context: CallbackContext):
     cid = update.effective_chat.id
     hotels = context.chat_data['hotels']
     current_hotel = hotels['hotels_info'][hotels['current_index']]
-
+    pprint(tids)
     try:
         for tid in tids:
             context.bot.delete_message(chat_id=cid,
@@ -650,6 +664,7 @@ def validate_messager_callback(update: Update, context: CallbackContext) -> int:
     application['messager'] = q
     context.chat_data['application'] = application
     admin_id = int(config('TEST_ADMIN_ID'))
+    env = config('ENV')
 
     tids = context.chat_data['temporary_ids']
 
@@ -662,15 +677,11 @@ def validate_messager_callback(update: Update, context: CallbackContext) -> int:
     except Exception as e:
         print(e)
 
-    context.bot.send_message(chat_id=cid,
-                             text=user_data_text.format(application['name'],
-                                                        application['phone'],
-                                                        application['messager']))
-    context.bot.send_message(chat_id=admin_id,
-                             text=user_data_text.format(application['name'],
-                                                        application['phone'],
-                                                        application['messager']),
-                             reply_markup=admin_undone_kb)
+    for cid in [admin_id, cid]:
+        context.bot.send_message(chat_id=cid,
+                                 text=user_data_text.format(application['name'],
+                                                            application['phone'],
+                                                            application['messager']))
 
     for wishlist_item in wishlist:
         for cid in [admin_id, cid]:
@@ -692,7 +703,8 @@ def validate_messager_callback(update: Update, context: CallbackContext) -> int:
         'wishlist': wishlist,
     }
 
-    store_user(user_info)
+    if env == 'PROD':
+        store_user(user_info)
 
     payload = {'message_id': 0,
                'current_index': 0,

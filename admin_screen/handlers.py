@@ -30,37 +30,37 @@ start_admin_handler = CommandHandler(command='start',
                                      filters=Filters.chat(int(config('TEST_ADMIN_ID'))))
 
 
-def mark_offer_callback(update: Update, context: CallbackContext):
-    cid = update.effective_message.chat.id
-    mid = update.effective_message.message_id
-    q = update.callback_query.data
-    update.callback_query.answer()
+# def mark_offer_callback(update: Update, context: CallbackContext):
+#     cid = update.effective_message.chat.id
+#     mid = update.effective_message.message_id
+#     q = update.callback_query.data
+#     update.callback_query.answer()
+#
+#     if q == 'done':
+#         kb = admin_undone_kb
+#     else:
+#         kb = admin_done_kb
+#
+#     context.bot.edit_message_reply_markup(chat_id=cid,
+#                                           message_id=mid,
+#                                           reply_markup=kb)
 
-    if q == 'done':
-        kb = admin_undone_kb
-    else:
-        kb = admin_done_kb
+#
+# mark_offer_handler = CallbackQueryHandler(callback=mark_offer_callback,
+#                                           pass_chat_data=True,
+#                                           pattern=r'admin:(.*)',
+#                                           )
 
-    context.bot.edit_message_reply_markup(chat_id=cid,
-                                          message_id=mid,
-                                          reply_markup=kb)
-
-
-mark_offer_handler = CallbackQueryHandler(callback=mark_offer_callback,
-                                          pass_chat_data=True,
-                                          pattern=r'admin:(.*)',
-                                          )
-
-admin_conversation_handler = ConversationHandler(
-    entry_points=[start_admin_handler],
-    fallbacks=[],
-
-    states={
-        MAIN_FUNCTION: [
-            mark_offer_handler
-        ],
-    },
-    name='admin_screen',
-    persistent=False,
-    allow_reentry=True,
-)
+# admin_conversation_handler = ConversationHandler(
+#     entry_points=[start_admin_handler],
+#     fallbacks=[],
+#
+#     states={
+#         MAIN_FUNCTION: [
+#             # mark_offer_handler
+#         ],
+#     },
+#     name='admin_screen',
+#     persistent=False,
+#     allow_reentry=True,
+# )

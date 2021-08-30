@@ -114,3 +114,4 @@ name: {}
 phone: {}
 messager: {}'''
 uncomplete_formular_text='You didnt choose date, destination country or departure city.'
+no_tours_text='Any available tours :('

@@ -9,10 +9,10 @@ from selenium.webdriver.support.ui import Select
 
 username = config('USERNAME')
 password = config('PASS')
-ENV = config('ENV')
+env = config('ENV')
 
 options = Options()
-if ENV == 'DEBUG':
+if env == 'DEBUG':
     path_driver = config('PATH_TO_DRIVER')
     path_chrome = config('PATH_TO_CHROME')
     options.binary_location = path_chrome  # chrome binary location specified here
@@ -26,16 +26,6 @@ options.add_experimental_option('useAutomationExtension', False)
 chrome_prefs = {}
 options.experimental_options["prefs"] = chrome_prefs
 chrome_prefs["profile.default_content_settings"] = {"images": 2}
-
-params = {'destination_country': 'ОАЭ',
-          'departure_city': 'Киев',
-          'min_nights': '7',
-          'max_nights': '9',
-          'date': '10.08.2021 - 10.08.2021',
-          'adults': '2',
-          'kids': '0',
-          'stars': ['1', '2'],
-          'food': ['1', '2']}
 
 
 def get_info(param):
@@ -71,7 +61,7 @@ def get_info(param):
     """
 
     while True:
-        if ENV == 'DEBUG':
+        if env == 'DEBUG':
             driver = webdriver.Chrome(options=options, executable_path=path_driver)
         else:
             driver = webdriver.Chrome(options=options)
@@ -79,7 +69,7 @@ def get_info(param):
         try:
             driver.get(config('URL'))
             driver.maximize_window()
-            wait = WebDriverWait(driver, 20)
+            wait = WebDriverWait(driver, 50)
 
             # find password input field and insert username
             username_field = wait.until(EC.visibility_of_element_located((By.ID, 'loginform-login')))
@@ -117,20 +107,16 @@ def get_info(param):
             actions.perform()
             destination_list = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, "chosen-results")))
             countries = destination_list.find_elements_by_tag_name("li")
-            for country in countries:
-                if country.text == param['destination_country']:
-                    country.click()
+            countries[param['destination_country']].click()
 
             # departure city
             departure_city_block = wait.until(EC.visibility_of_element_located((By.ID, "town_from_id_chosen")))
             actions.move_to_element(departure_city_block)
             actions.click(departure_city_block)
             actions.perform()
-            destination_list = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, "chosen-results")))
+            destination_list = wait.until(EC.visibility_of_all_elements_located((By.CLASS_NAME, "chosen-results")))[1]
             cities = destination_list.find_elements_by_tag_name("li")
-            for city in cities:
-                if city.text == param['departure_city']:
-                    city.click()
+            cities[param['departure_city']].click()
 
             # date
             date_input = wait.until(EC.visibility_of_element_located((By.ID, "search_date")))
@@ -216,5 +202,6 @@ def get_info(param):
             return proceed_offers
 
         except Exception as e:
-            print(e)
             driver.close()
+            return None
+

@@ -11,6 +11,7 @@ logdna==1.18.0
 lxml==4.6.3
 peewee==3.14.4
 phonenumbers==8.12.30
+psycopg2==2.9.1
 psycopg2-binary==2.9.1
 pycparser==2.20
 pyee==8.1.0
