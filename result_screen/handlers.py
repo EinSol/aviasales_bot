@@ -28,8 +28,8 @@ def submit_request_callback(update: Update, context: CallbackContext):
     cid = update.effective_chat.id
 
     pprint(search_request)
-    if search_request['destination_country'] is None or\
-            search_request['departure_city'] is None or\
+    if search_request['destination_country'] is None or \
+            search_request['departure_city'] is None or \
             not search_request['date']:
         context.bot.send_message(chat_id=cid,
                                  text=uncomplete_formular_text,
@@ -665,8 +665,18 @@ def validate_messager_callback(update: Update, context: CallbackContext) -> int:
     application = context.chat_data['application']
     application['messager'] = q
     context.chat_data['application'] = application
-    admin_id = int(config('TEST_ADMIN_ID'))
     env = config('ENV')
+
+    try:
+        if env == 'DEBUG':
+            admin_id = int(config('TEST_ADMIN_ID'))
+        elif env == 'PROD':
+            admin_id = int(config('ADMIN_ID'))
+        else:
+            raise EnvironmentError
+    except EnvironmentError as e:
+        print(e)
+        return APPLICATION_FUNCTION
 
     tids = context.chat_data['temporary_ids']
 
