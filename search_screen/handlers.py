@@ -6,7 +6,8 @@ from search_screen.texts import (welcome_text, wrong_input_text, wrong_date_text
                                  country_list, city_list, enter_destination_text,
                                  enter_departure_text, enter_date_text, old_date_text, adults_text,
                                  kids_text, nights_amount_text, request_template_text, stars_text,
-                                 food_text, incorrect_range_date_text, )
+                                 food_text, incorrect_range_date_text, pin_symb, your_date_text,your_city_text,
+                                 your_country_text, your_nights_text)
 from datetime import datetime
 from pprint import pprint
 from keyboards import (adults_kb, kids_kb, stars_kb, food_list, food_kb,
@@ -55,7 +56,7 @@ def start_callback(update: Update, context: CallbackContext):
 start_handler = CommandHandler(command='start',
                                callback=start_callback,
                                pass_chat_data=True,
-                               filters=~Filters.chat(config('TEST_ADMIN_ID')))
+                               filters=~Filters.chat(config('TEST_ADMIN_ID')) & ~Filters.chat(config('ADMIN_ID')))
 
 
 def destination_country_callback(update: Update, context: CallbackContext):
@@ -87,7 +88,7 @@ def validate_destination_callback(update: Update, context: CallbackContext):
     search_request = context.chat_data['search_request']
     pprint(search_request)
     search_request['destination_country'] = q
-    update.message.reply_text(f'Your country code: {q + 1}')
+    update.message.reply_text(your_country_text.format(country_list[q+1]))
 
     return SEARCH_FUNCTIONS
 
@@ -127,7 +128,7 @@ def validate_departure_callback(update: Update, context: CallbackContext):
     pprint(search_request)
     search_request['departure_city'] = q
 
-    update.message.reply_text(f'Your city code: {q + 1}')
+    update.message.reply_text(your_city_text.format(city_list[q+1]))
     return SEARCH_FUNCTIONS
 
 
@@ -176,7 +177,7 @@ def validate_date_callback(update: Update, context: CallbackContext):
     search_request['date'] = q
     context.chat_data.update({'search_request': search_request})
 
-    update.message.reply_text(f'Your date: {q}')
+    update.message.reply_text(your_date_text.format(q))
     return SEARCH_FUNCTIONS
 
 
@@ -216,13 +217,13 @@ def add_hotel_stars_callback(update: Update, context: CallbackContext) -> int:
 
     if star in stars:
         stars.remove(star)
-        query.answer(text=f'{star} is removed')
+        query.answer(text=f'{star} удален!')
     else:
         stars.append(star)
-        query.answer(text=f'{star} is added')
+        query.answer(text=f'{star} добавлен!')
 
     for a in stars:
-        star_text_options[a] = '#'
+        star_text_options[a] = pin_symb
 
     context.bot.edit_message_text(chat_id=cid,
                                   message_id=mid,
@@ -249,7 +250,7 @@ def submit_hotel_stars_callback(update: Update, context: CallbackContext) -> int
     star_text_options = [''] * 5
 
     for a in stars:
-        star_text_options[a] = '#'
+        star_text_options[a] = pin_symb
 
     context.bot.edit_message_text(chat_id=cid,
                                   message_id=mid,
@@ -298,13 +299,13 @@ def add_hotel_food_callback(update: Update, context: CallbackContext) -> int:
 
     if meal in food:
         food.remove(meal)
-        query.answer(text=f'{food_list[meal]} is removed')
+        query.answer(text=f'{food_list[meal]} удален!')
     else:
         food.append(meal)
-        query.answer(text=f'{food_list[meal]} is added')
+        query.answer(text=f'{food_list[meal]} добавлен!')
 
     for a in food:
-        food_text_options[a] = '#'
+        food_text_options[a] = pin_symb
 
     context.bot.edit_message_text(chat_id=cid,
                                   message_id=mid,
@@ -331,7 +332,7 @@ def submit_hotel_food_callback(update: Update, context: CallbackContext) -> int:
     food_text_options = [''] * 6
 
     for a in food:
-        food_text_options[a] = '#'
+        food_text_options[a] = pin_symb
 
     context.bot.edit_message_text(chat_id=cid,
                                   message_id=mid,
@@ -377,7 +378,7 @@ def validate_adults_callback(update: Update, context: CallbackContext):
     context.bot.delete_message(chat_id=cid,
                                message_id=mid)
     context.bot.send_message(chat_id=cid,
-                             text=f'Adults: {q}')
+                             text=f'Взрослые: {q}')
 
     return SEARCH_FUNCTIONS
 
@@ -415,7 +416,7 @@ def validate_kids_callback(update: Update, context: CallbackContext):
     context.bot.delete_message(chat_id=cid,
                                message_id=mid)
     context.bot.send_message(chat_id=cid,
-                             text=f'Kids: {q}')
+                             text=f'Дети: {q}')
     return SEARCH_FUNCTIONS
 
 
@@ -458,7 +459,7 @@ def validate_nights_callback(update: Update, context: CallbackContext) -> int:
     pprint(search_request)
     search_request['min_nights'], search_request['max_nights'] = q
 
-    update.message.reply_text(f'Nights: {q[0]}-{q[1]}')
+    update.message.reply_text(your_nights_text.format(q[0], q[1]))
     return SEARCH_FUNCTIONS
 
 
@@ -476,8 +477,8 @@ def show_param_callback(update: Update, context: CallbackContext):
     food = ', '.join(food)
 
     update.message.reply_text(request_template_text.format(
-        search_request['destination_country']+1,
-        search_request['departure_city']+1,
+        country_list[search_request['destination_country']],
+        city_list[search_request['destination_country']],
         search_request['date'],
         stars,
         search_request['adults'],
@@ -507,7 +508,6 @@ search_conversation_handler = ConversationHandler(
             adults_amount_handler,
             kids_amount_handler,
             nights_amount_handler,
-            # help_handler,
             show_param_handler,
             result_conversation_handler,
         ],

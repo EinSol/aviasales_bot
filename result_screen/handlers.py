@@ -616,11 +616,7 @@ def validate_name_callback(update: Update, context: CallbackContext) -> int:
 
 validate_name_handler = MessageHandler(callback=validate_name_callback,
                                        pass_chat_data=True,
-                                       filters=Filters.regex(r'(?:(?![0-9_])[\w])+') &
-                                               ~Filters.text('to hotel') &
-                                               ~Filters.text('to wishlist') &
-                                               ~Filters.text('to search') &
-                                               ~Filters.text('send applecation'))
+                                       filters=Filters.regex(r'(?:(?![0-9_])[\w])+'))
 
 
 def validate_phone_callback(update: Update, context: CallbackContext) -> int:

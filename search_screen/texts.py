@@ -1,16 +1,9 @@
-welcome_text = 'Hallo, {}\n' \
-               'In order to start the most axciting journey in your life you should:\n' \
-               'choose country you want to visit: /to\n' \
-               'choose departure place: /from\n' \
-               'choose possibly date of flight: "/date dd:mm:yy"\n' \
-               'Optional:\n' \
-               'number of stars: "/stars 1, 2"\n' \
-               'meal: "/food RO, RO"\n' \
-               'number of adults(max 6): "/adults 2"\n' \
-               'number of kids(max 3): "/kids 0"\n' \
-               'number of nights(max 21): "/nights 7-10"'
+welcome_text = 'Привет, {}\n' \
+               'Чтобы начать ваше путешествие мечты, нужно выбрать когда, откуда а главное, ' \
+               'когда вы хотите отправиться. Для этого воспользуйтесть меню. Так же вы можете задать дополнительные параметры' \
+               'во вкладке меню.'
 
-wrong_input_text = 'incorrect input'
+wrong_input_text = 'Некорректный ввод.'
 country_list = ['Австрия', 'Албания', 'Андорра', 'Армения', 'Аруба', 'Болгария', 'Греция',
              'Грузия', 'Доминикана', 'Египет', 'Иордания',
              'Испания', 'Казахстан', 'Кения', 'Кипр', 'Мальдивы', 'Мексика',
@@ -21,35 +14,38 @@ city_list = ['Актобе', 'Алматы', 'Винница', 'Днепр', 'З
              'Николаев', 'Нур-Султан', 'Одесса', 'Павлодар',
              'Полтава', 'Ровно', 'Ташкент', 'Усть-Каменогорск',
              'Харьков', 'Херсон', 'Шымкент']
+pin_symb = '\U0001F4CD'
+your_city_text='Город: {}'
+your_date_text='Дата: {}'
+your_country_text='Страна: {}'
+your_nights_text='Количевство ночей: {}-{}'
+wrong_date_text = 'Некорректная дата, правильный формат - дд.мм.гггг'
 
-
-wrong_date_text = 'incorrect date, right format dd-mm-yyyy'
-
-enter_destination_text = 'Enter country code:'
-enter_departure_text = 'enter city code:'
-enter_date_text = 'enter date in possible date of flight in format dd.mm.yyyy - dd.mm.yyyy:'
-old_date_text = 'It is a date from the past:)\n' \
-                'Try again:'
-incorrect_range_date_text = 'first date is bigger than second\n' \
-                            'Try again'
-adults_text = 'How many adults?'
-kids_text = 'How many kids?'
-nights_amount_text = 'Enter number of nights from 1 till 21:'
-request_template_text = 'Destination country: {}\n' \
-                        'Departure city: {}\n' \
-                        'Date: {}\n' \
-                        'Hotel stars: {}\n' \
-                        'Adults: {}\n' \
-                        'Kids: {}\n' \
-                        'Food: {}\n' \
-                        'Number of nights: {}'
-stars_text = 'How many stars do you want?\n' \
-             '[{}] *\n' \
-             '[{}] **\n' \
-             '[{}] ***\n' \
-             '[{}] ****\n' \
-             '[{}] *****'
-food_text = 'what type of meal do you want?\n' \
+enter_destination_text = 'Введите код страны::'
+enter_departure_text = 'Введите код города:'
+enter_date_text = 'ВВедите дату вылета дд.мм.гггг - дд.мм.гггг:'
+old_date_text = 'Эта дата уже прошла.\n' \
+                'Попроуйте еще раз:'
+incorrect_range_date_text = 'Первая дата больше второй.\n' \
+                            'Попробуйте еще раз:'
+adults_text = 'Сколько взрослых?'
+kids_text = 'Сколько детей?'
+nights_amount_text = 'Введите количество ночей от 1 до 21:'
+request_template_text = 'Страна прибытия: {}\n' \
+                        'Город отправления: {}\n' \
+                        'Дата: {}\n' \
+                        'Звезды: {}\n' \
+                        'Взрослые: {}\n' \
+                        'Дети: {}\n' \
+                        'Питание: {}\n' \
+                        'Количество ночей: {}'
+stars_text = 'Какое количество звезд у отеля?\n' \
+             '[{}] \U00002B50\n' \
+             '[{}] \U00002B50\U00002B50\n' \
+             '[{}] \U00002B50\U00002B50\U00002B50\n' \
+             '[{}] \U00002B50\U00002B50\U00002B50\n' \
+             '[{}] \U00002B50\U00002B50\U00002B50'
+food_text = 'Какое питание вы предпочитаете?\n' \
             '[{}] RO\n' \
             '[{}] BB\n' \
             '[{}] HB\n' \

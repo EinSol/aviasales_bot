@@ -1,34 +1,34 @@
-empty_wishlist_text='your wishlist is empty :('
-hotel_representation_text = '''Hotel: {}
-Town: {}
-Stars: {}
-Start price: {}
+empty_wishlist_text='Ваш список пуст:('
+hotel_representation_text = '''Отель: {}
+Город: {}
+Звезды: {}
+От: {}
 '''
-tour_representation_text = '''Arrival date: {}
-Nights: {}
-Room: {}
-Food: {}
-Price: {}
+tour_representation_text = '''Дата прибытия: {}
+Количество ночей: {}
+Тип комнаты: {}
+Питание: {}
+Цена: {}
 '''
-wishlist_representation_text = '''Hotel: {}
-Town: {}
-Arrival date: {}
-Nights: {}
-Stars: {}
-Room: {}
-Food: {}
-Price: {}
+wishlist_representation_text = '''Отель: {}
+Город: {}
+Дата прибытия: {}
+Количество ночей: {}
+Звезды: {}
+Тип комнаты: {}
+Питание: {}
+Цена: {}
 '''
 
-add_item_text='add something to wishlist.'
-enter_name_text='enter your name and surname:'
-incorrect_name_text='invalid name, try again.'
-invalid_phone_text='invalid phone number, try again.'
-enter_phone_text='enter your phone number (start with +38 etc.):'
-choose_messager_text='choose messager you want to get in touch'
-user_data_text='''your application:
-name: {}
-phone: {}
-messager: {}'''
-uncomplete_formular_text='You didnt choose date, destination country or departure city.'
-no_tours_text='Any available tours :('
+add_item_text='Сначало добавьте турю'
+enter_name_text='Введите имя и фамилию:'
+incorrect_name_text='Некорректный имя или Фамилия, введите еще раз.'
+invalid_phone_text='Некорректный номер, введите еще раз.'
+enter_phone_text='Введите свой номер телефона ( +380 и тд.):'
+choose_messager_text='Выбирите месенджер для обратной связи.'
+user_data_text='''Ваша заявка:
+ИФ: {}
+телефон: {}
+месенджер: {}'''
+uncomplete_formular_text='Вы не выбрали дату, страну прибытия или город отправления.'
+no_tours_text='Туры, с данными параметрами - отсутствуют :('
