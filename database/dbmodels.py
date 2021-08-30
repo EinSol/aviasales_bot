@@ -26,8 +26,8 @@ class User(Model):
         database = db
 
 
-# if not User.table_exists() and ENV == 'PROD':
-#     db.create_tables([User])
+if not User.table_exists() and ENV == 'PROD':
+    db.create_tables([User])
 
 
 
