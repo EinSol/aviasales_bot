@@ -18,7 +18,7 @@ if env == 'DEBUG':
     path_chrome = config('PATH_TO_CHROME')
     options.binary_location = path_chrome  # chrome binary location specified here
 
-# options.add_argument("--headless")
+options.add_argument("--headless")
 options.add_argument("--start-maximized")  # open Browser in maximized mode
 options.add_argument("--no-sandbox")  # bypass OS security model
 options.add_argument("--disable-dev-shm-usage")  # overcome limited resource problems
