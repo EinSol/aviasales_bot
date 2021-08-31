@@ -27,8 +27,7 @@ back_tour_button = InlineKeyboardButton(text=f'к отелям', callback_data=f
 result_reply_buttons = [['к отелям', 'к списку', 'к поиску'], ['отправить заявку']]
 search_reply_buttons = [['куда', 'откуда', 'когда'], ['поиск']]
 
-
-
+milaTaras1
 adults_kb = InlineKeyboardMarkup([adults_buttons[i:i + 2] for i in range(0, len(adults_buttons), 2)])
 kids_kb = InlineKeyboardMarkup([kids_buttons[i:i + 2] for i in range(0, len(kids_buttons), 2)])
 stars_kb = InlineKeyboardMarkup([stars_buttons[i:i + 2] for i in range(0, len(stars_buttons), 2)])

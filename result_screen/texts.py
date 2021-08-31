@@ -1,5 +1,5 @@
 empty_wishlist_text='Ваш список пуст:('
-in_process_text='Обработка...'
+in_process_text='Обработка займет 1 минуту...'
 found_text="Найдено!"
 hotel_representation_text = '''Отель: {}
 Город: {}
