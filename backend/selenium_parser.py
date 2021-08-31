@@ -122,7 +122,7 @@ def get_info(param):
         print(destination_list.text)
         cities = destination_list.find_elements_by_tag_name("li")
         for city in cities:
-            if city.text == city_list[param['destination_country']]:
+            if city.text == city_list[param['departure_city']]:
                 actions.move_to_element(city).click(city).perform()
 
         # date
@@ -156,8 +156,10 @@ def get_info(param):
         # hotel stars
         stars_block = wait.until(EC.visibility_of_element_located((By.NAME, "STARS")))
         stars_list = stars_block.find_elements_by_tag_name('input')
+        print(stars_list)
         for star in stars_list:
             if star.get_attribute('value') in param['stars']:
+                print(type(star.get_attribute('value')))
                 star.click()
 
         # food
@@ -178,7 +180,6 @@ def get_info(param):
             actions = ActionChains(driver)
             start_price = offer.find_element_by_class_name('price').find_element_by_tag_name(
                 'a').text.split(' ')[1:]
-            print(offer.find_element_by_class_name('town-name').text[12:])
             proceed_offer = {'town': offer.find_element_by_class_name('town-name').text[12:],
                              'hotel_name': ' '.join(
                                  offer.find_element_by_class_name('tourua-hotel-name').text.split(' ')[1:]),
@@ -213,3 +214,14 @@ def get_info(param):
         print(e)
         driver.close()
         return
+
+
+get_info({'destination_country': 0,
+          'departure_city': 7,
+          'min_nights': '7',
+          'max_nights': '10',
+          'date': '30.08.2021',
+          'adults': '3',
+          'kids': '2',
+          'stars': ['1', '3'],
+          'food': ['2', '4']})

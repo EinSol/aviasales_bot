@@ -7,7 +7,7 @@ from result_screen.texts import (empty_wishlist_text, tour_representation_text,
                                  hotel_representation_text, wishlist_representation_text,
                                  add_item_text, enter_name_text, enter_phone_text, choose_messager_text,
                                  incorrect_name_text, invalid_phone_text, user_data_text, uncomplete_formular_text,
-                                 no_tours_text, in_process_text)
+                                 no_tours_text, in_process_text, found_text)
 from backend.selenium_parser import get_info
 from decouple import config
 from pprint import pprint
@@ -18,7 +18,7 @@ from keyboards import (hotels_list_kb, tours_list_kb, one_tour_kb, result_reply_
 from phonenumbers import carrier
 from phonenumbers import parse
 from phonenumbers.phonenumberutil import number_type
-from database.tools import store_user
+# from database.tools import store_user
 
 HOTELS_LIST_FUNCTION, TOURS_LIST_FUNCTION, WISHLIST_FUNCTION, APPLICATION_FUNCTION = range(9, 13)
 
@@ -40,14 +40,12 @@ def submit_request_callback(update: Update, context: CallbackContext):
     for i in range(1, 6):
         if pin_symb*i in search_request['stars']:
             search_request['stars'].remove(pin_symb*i)
-            search_request['stars'].append(i)
-            continue
+            search_request['stars'].append(str(i))
 
     for i, text in enumerate(food_list):
         if text in search_request['food']:
             search_request['food'].remove(text)
-            search_request['food'].append(i+2)
-
+            search_request['food'].append(str(i+2))
 
     mid = update.message.reply_text(text=in_process_text).message_id
     cid = update.effective_chat.id
@@ -720,8 +718,8 @@ def validate_messager_callback(update: Update, context: CallbackContext) -> int:
         'wishlist': wishlist,
     }
 
-    if env == 'PROD':
-        store_user(user_info)
+    # if env == 'PROD':
+    #     store_user(user_info)
 
     payload = {'message_id': 0,
                'current_index': 0,
