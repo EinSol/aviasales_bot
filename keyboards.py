@@ -16,15 +16,15 @@ food_buttons += [InlineKeyboardButton(text=f'отправить', callback_data=
 messager_buttons = [InlineKeyboardButton(text=f'{item}',
                                          callback_data=f'messager:{item}') for item in messager_list]
 
-prev_button = InlineKeyboardButton(text=f'вперед', callback_data=f'-1')
-next_button = InlineKeyboardButton(text=f'назад', callback_data=f'1')
+prev_button = InlineKeyboardButton(text=f'предыдуший', callback_data=f'-1')
+next_button = InlineKeyboardButton(text=f'следующий', callback_data=f'1')
 del_item_button = InlineKeyboardButton(text=f'удалить', callback_data=f'remove')
 to_tours_button = InlineKeyboardButton(text=f'показать туры', callback_data=f'tours')
 add_tour_button = InlineKeyboardButton(text=f'добавить в список', callback_data=f'add')
 back_tour_button = InlineKeyboardButton(text=f'к отелям', callback_data=f'back')
 # done_button = InlineKeyboardButton(text=f'done', callback_data=f'admin:done')
 # undone_button = InlineKeyboardButton(text=f'undone', callback_data=f'admin:undone')
-result_reply_buttons = [['к отелям', 'к списку', 'к поиску'], ['send application']]
+result_reply_buttons = [['к отелям', 'к списку', 'к поиску'], ['отправить заявку']]
 search_reply_buttons = [['куда', 'откуда', 'когда'], ['поиск']]
 
 
