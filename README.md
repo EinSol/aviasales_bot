@@ -7,7 +7,7 @@ Start menu:
   - Choose destination country
   - Choose departure city
   - specify date of flight
-  Additional options:
+Additional options:
   - hotel class
   - Meals in the hotel
   - Number of children
