@@ -7,11 +7,11 @@ Start menu:
   - Choose destination country
   - Choose departure city
   - specify date of flight
-  # Additional options
-    - hotel class
-    - Meals in the hotel
-    - Number of children
-    - Number of adults
+  Additional options:
+  - hotel class
+  - Meals in the hotel
+  - Number of children
+  - Number of adults
     
 Results menu:
 - Choose hotel 
